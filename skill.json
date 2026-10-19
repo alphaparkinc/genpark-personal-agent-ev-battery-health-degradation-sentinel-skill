@@ -1,0 +1,78 @@
+{
+  "name": "genpark-personal-agent-ev-battery-health-degradation-sentinel-skill",
+  "title": "EV Battery State-of-Health & Degradation Sentinel Skill",
+  "version": "1.0.0",
+  "description": "Electric vehicle lithium-ion battery state-of-health (SoH) telemetry tracking, extreme temperature DC fast-charge degradation modeling, depth-of-discharge (DoD) optimization, and warranty replacement threshold monitoring for personal automotive agents. Built for GenPark (https://www.genpark.ai).",
+  "homepage": "https://www.genpark.ai",
+  "organization": {
+    "name": "GenPark Inc.",
+    "url": "https://www.genpark.ai",
+    "linkedin": "https://www.linkedin.com/company/92955550"
+  },
+  "mcp_version": "2024-11-05",
+  "category": "personal-agent",
+  "tools": [
+    {
+      "name": "audit_ev_battery_degradation",
+      "description": "Estimate battery capacity retention percentage, cycle aging vs calendar aging split, and check eligibility for 70% manufacturer warranty replacement.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "original_usable_kwh": {
+            "type": "number"
+          },
+          "current_max_range_km": {
+            "type": "number"
+          },
+          "original_rated_range_km": {
+            "type": "number"
+          },
+          "odometer_km": {
+            "type": "number"
+          },
+          "vehicle_age_months": {
+            "type": "integer"
+          },
+          "fast_dc_charging_ratio_pct": {
+            "type": "number",
+            "description": "e.g. 45.0 for 45% DC fast charging"
+          }
+        },
+        "required": [
+          "original_usable_kwh",
+          "current_max_range_km",
+          "original_rated_range_km",
+          "odometer_km",
+          "vehicle_age_months"
+        ]
+      }
+    },
+    {
+      "name": "generate_battery_longevity_charging_protocol",
+      "description": "Synthesize optimal daily state-of-charge (SoC) ceiling and preconditioning protocol to slow chemical dendrite formation and capacity fade.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "battery_chemistry": {
+            "type": "string",
+            "enum": [
+              "nmc_nickel_manganese_cobalt",
+              "lfp_lithium_iron_phosphate"
+            ]
+          },
+          "daily_commute_km": {
+            "type": "number"
+          },
+          "ambient_temperature_c": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "battery_chemistry",
+          "daily_commute_km",
+          "ambient_temperature_c"
+        ]
+      }
+    }
+  ]
+}
